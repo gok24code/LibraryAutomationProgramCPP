@@ -1,13 +1,12 @@
 #include <iostream>
-#include <string>
-#include <clocale>
+#include <locale.h>
 #include <time.h>
 #include <stdlib.h>
 using namespace std;
 
 #define MAX_COUNT 10
 
-// Yapiyi her kitap bir nesne olacak sekilde güncelledik
+// Yapiyi her kitap bir nesne olacak sekilde gÃ¼ncelledik
 struct Book {
     int serial_number;
     string title;
@@ -15,7 +14,7 @@ struct Book {
     int year;
 };
 
-// Global degisken: Veriler tüm fonksiyonlar tarafindan erisilebilir olur
+// Global degisken: Veriler tÃ¼m fonksiyonlar tarafindan erisilebilir olur
 Book library[MAX_COUNT];
 
 int current_book_count = 0;
@@ -50,7 +49,7 @@ void readybooks(){
 
 void add_book() {
     if (current_book_count >= MAX_COUNT) {
-        cout << "Kütüphane dolu!\n";
+        cout << "KÃ¼tÃ¼phane dolu!\n";
         return;
     }
 
@@ -77,14 +76,14 @@ void getbook() {
     string name_to_find;
     bool found = false;
 
-    // Tamponda kalan her seyi temizle (özellikle seçimden kalan Enter karakteri)
+    // Tamponda kalan her seyi temizle (Ã¶zellikle seÃ§imden kalan Enter karakteri)
     cin.ignore(1000, '\n'); 
 
     cout << "\nKitap Ismi Giriniz: ";
-    getline(cin, name_to_find); // Artik kullanici girisini düzgün bekler
+    getline(cin, name_to_find); // Artik kullanici girisini dÃ¼zgÃ¼n bekler
 
     for (int k = 0; k < current_book_count; k++) {
-        // Küçük bir ipucu: if blogunun içindeki ELSE BREAK kismini sildiginden emin ol!
+        // KÃ¼Ã§Ã¼k bir ipucu: if blogunun iÃ§indeki ELSE BREAK kismini sildiginden emin ol!
         if (name_to_find == library[k].title) {
             cout << "\n--- KITAP BULUNDU ---" << endl;
             cout << "Baslik: " << library[k].title << endl;
@@ -100,7 +99,7 @@ void getbook() {
 
 void display_books() {
 
-    cout << "\nKütüphane Listesi:\n";
+    cout << "\nKÃ¼tÃ¼phane Listesi:\n";
 
     for (int i = 0; i < current_book_count; i++) {
         cout << " -> " << library[i].title << " (" << library[i].author << ")" << " Seri no: " << library[i].serial_number << endl;
@@ -114,7 +113,7 @@ int main() {
     int choice;
 
 	while(choice != 4){
-        cout << "\n1. Ekle | 2. Ara | 3. Listele | 4. Çikis\nSeçiminiz: ";
+        cout << "\n1. Ekle | 2. Ara | 3. Listele | 4. Ã‡ikis\nSeÃ§iminiz: ";
         cin >> choice;
 
         switch (choice) {
