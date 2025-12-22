@@ -12,7 +12,7 @@ struct Book {
     int serial_number;
     string title;
     string author;
-    int year;
+    
 };
 
 // Global degisken: Veriler tüm fonksiyonlar tarafindan erisilebilir olur
@@ -53,39 +53,63 @@ void add_book() {
         cout << "Kütüphane dolu!\n";
         return;
     }
+    
+    bool foundExist = false;
+    int serial;
+	string title,author;
 
     cout << "\nKitap Ekleme:\n";
     cout << "Seri No: ";
-    cin >> library[current_book_count].serial_number;
+    cin >> serial;
 
     cin.ignore();
     cout << "Baslik: ";
-    getline(cin, library[current_book_count].title);
+    getline(cin, title);
 
     cout << "Yazar: ";
-    getline(cin, library[current_book_count].author);
-
-    cout << "Basim Yili: ";
-    cin >> library[current_book_count].year;
-
+    getline(cin, author);
+     
+	for (int a = 0; a < current_book_count; a++) {
+        // Küçük bir ipucu: if blogunun içindeki ELSE BREAK kismini sildiginden emin ol!
+        if ("-NULL-" == library[a].title) {
+    
+            library[a].title = title;
+			library[a].author = author;
+			library[a].serial_number = serial;
+			
+			foundExist = true;
+            break; 
+        }
+    }
+    if (!foundExist)
+	{
+	
+            library[current_book_count].title = title;
+			library[current_book_count].author = author;
+			library[current_book_count].serial_number = serial;
+			}
     current_book_count++; // Kitap sayisini artir
     cout << "Kitap basariyla eklendi!\n";
 }
 
 
-void getbook() {
-    string name_to_find;
-    bool found = false;
-
-    // Tamponda kalan her seyi temizle (özellikle seçimden kalan Enter karakteri)
-    cin.ignore(1000, '\n'); 
-
-    cout << "\nKitap Ismi Giriniz: ";
-    getline(cin, name_to_find); // Artik kullanici girisini düzgün bekler
-
+void getbook(string title) {
+	bool found = false;
+	if(title == ""){
+	
+	    string name_to_find;
+	    // Tamponda kalan her seyi temizle (özellikle seçimden kalan Enter karakteri)
+	    cin.ignore(1000, '\n'); 
+	
+	    cout << "\nKitap Ismi Giriniz: ";
+	    getline(cin, name_to_find); // Artik kullanici girisini düzgün bekler
+	    	
+	    	
+		title = name_to_find;
+	}
     for (int k = 0; k < current_book_count; k++) {
         // Küçük bir ipucu: if blogunun içindeki ELSE BREAK kismini sildiginden emin ol!
-        if (name_to_find == library[k].title) {
+        if (title == library[k].title) {
             cout << "\n--- KITAP BULUNDU ---" << endl;
             cout << "Baslik: " << library[k].title << endl;
             cout << "Yazar: " << library[k].author << endl;
@@ -95,7 +119,7 @@ void getbook() {
         }
     }
 
-    if (!found) cout << "\n'" << name_to_find << "' isimli kitap bulunamadi.\n";
+    if (!found) cout << "\n'" << title << "' isimli kitap bulunamadi.\n";
 }
 
 void display_books() {
@@ -107,14 +131,46 @@ void display_books() {
     }
 }
 
+
+void deleteBook(string title){
+	
+	bool deleted = false;
+	if(title == ""){
+	    cin.ignore(1000, '\n'); 
+	
+	    cout << "\nKitap Ismi Giriniz: ";
+	    getline(cin, title); // Artik kullanici girisini düzgün bekler
+	}
+    for (int d = 0; d < current_book_count; d++) {
+        // Küçük bir ipucu: if blogunun içindeki ELSE BREAK kismini sildiginden emin ol!
+        if (title == library[d].title) {
+            cout << "\n--- KITAP SILINIYOR ---" << endl;
+            cout << "Baslik: " << library[d].title << endl;
+            cout << "Yazar: " << library[d].author << endl;
+            cout << "Seri No: " << library[d].serial_number << endl;
+            library[d].title = "-NULL-";
+			library[d].author = "-NULL-";
+			library[d].serial_number = 0;
+			deleted = true;
+            break; 
+        }
+    }
+    
+            cout << "\n--- KITAP SILINDI ---" << endl;
+            current_book_count--;
+    
+    
+	
+}
+
 int main() {
 	setlocale(LC_ALL, "Turkish");
 	readybooks();
 	
     int choice;
 
-	while(choice != 4){
-        cout << "\n1. Ekle | 2. Ara | 3. Listele | 4. Çikis\nSeçiminiz: ";
+	while(choice != 5){
+        cout << "\n1. Ekle | 2. Ara | 3. Listele | 4. Sil | 5.Çikis\nSeçiminiz: ";
         cin >> choice;
 
         switch (choice) {
@@ -123,14 +179,14 @@ int main() {
 			add_book(); break;
 
         case 2: 
-			getbook(); break;
+			getbook(""); break;
 
         case 3: 
 			display_books(); break;
 
-		default:
-			break;
-        }
+		case 4:
+			deleteBook("");
+		}
         
 	}
     return 0;
