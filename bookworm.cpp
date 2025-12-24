@@ -33,10 +33,10 @@ string authors[10] = {
 void save_books_to_file() {
     ofstream outFile("books.dat");
     if (outFile.is_open()) {
+    	
+        outFile << "Seri No | Baslik | Yazar" << endl;
         for (int i = 0; i < current_book_count; i++) {
-            outFile << library[i].serial_number << endl;
-            outFile << library[i].title << endl;
-            outFile << library[i].author << endl;
+            outFile << library[i].serial_number << " | " << library[i].title << " | " << library[i].author << endl;
         }
         outFile.close();
     }
