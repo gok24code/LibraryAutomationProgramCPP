@@ -3,11 +3,12 @@
 #include <clocale>
 #include <time.h>
 #include <stdlib.h>
+#include <fstream>
 using namespace std;
 
 #define MAX_COUNT 10
 
-// Yapiyi her kitap bir nesne olacak sekilde güncelledik
+// Yapiyi her kitap bir nesne olacak sekilde gï¿½ncelledik
 struct Book {
     int serial_number;
     string title;
@@ -15,7 +16,7 @@ struct Book {
     
 };
 
-// Global degisken: Veriler tüm fonksiyonlar tarafindan erisilebilir olur
+// Global degisken: Veriler tï¿½m fonksiyonlar tarafindan erisilebilir olur
 Book library[MAX_COUNT];
 
 int current_book_count = 0;
@@ -29,6 +30,18 @@ string authors[10] = {
     "F. Scott Fitzgerald", "Herman Melville", "Leo Tolstoy", "Paulo Coelho", "George Orwell", 
     "Franz Kafka", "James Joyce", "Aldous Huxley", "J.D. Salinger", "Harper Lee"
 };
+void save_books_to_file() {
+    ofstream outFile("books.dat");
+    if (outFile.is_open()) {
+        for (int i = 0; i < current_book_count; i++) {
+            outFile << library[i].serial_number << endl;
+            outFile << library[i].title << endl;
+            outFile << library[i].author << endl;
+        }
+        outFile.close();
+    }
+}
+
 
 void readybooks(){
 	srand(time(0));
@@ -49,8 +62,9 @@ void readybooks(){
 
 
 void add_book() {
+	system("cls");
     if (current_book_count >= MAX_COUNT) {
-        cout << "Kütüphane dolu!\n";
+        cout << "Kï¿½tï¿½phane dolu!\n";
         return;
     }
     
@@ -70,7 +84,7 @@ void add_book() {
     getline(cin, author);
      
 	for (int a = 0; a < current_book_count; a++) {
-        // Küçük bir ipucu: if blogunun içindeki ELSE BREAK kismini sildiginden emin ol!
+        // Kï¿½ï¿½ï¿½k bir ipucu: if blogunun iï¿½indeki ELSE BREAK kismini sildiginden emin ol!
         if ("-NULL-" == library[a].title) {
     
             library[a].title = title;
@@ -90,25 +104,27 @@ void add_book() {
 			}
     current_book_count++; // Kitap sayisini artir
     cout << "Kitap basariyla eklendi!\n";
+    save_books_to_file();
 }
 
 
 void getbook(string title) {
+	system("cls");
 	bool found = false;
 	if(title == ""){
 	
 	    string name_to_find;
-	    // Tamponda kalan her seyi temizle (özellikle seçimden kalan Enter karakteri)
+	    // Tamponda kalan her seyi temizle (ï¿½zellikle seï¿½imden kalan Enter karakteri)
 	    cin.ignore(1000, '\n'); 
 	
 	    cout << "\nKitap Ismi Giriniz: ";
-	    getline(cin, name_to_find); // Artik kullanici girisini düzgün bekler
+	    getline(cin, name_to_find); // Artik kullanici girisini dï¿½zgï¿½n bekler
 	    	
 	    	
 		title = name_to_find;
 	}
     for (int k = 0; k < current_book_count; k++) {
-        // Küçük bir ipucu: if blogunun içindeki ELSE BREAK kismini sildiginden emin ol!
+        // Kï¿½ï¿½ï¿½k bir ipucu: if blogunun iï¿½indeki ELSE BREAK kismini sildiginden emin ol!
         if (title == library[k].title) {
             cout << "\n--- KITAP BULUNDU ---" << endl;
             cout << "Baslik: " << library[k].title << endl;
@@ -123,7 +139,7 @@ void getbook(string title) {
 }
 
 void display_books() {
-
+	system("cls");
     cout << "\nKütüphane Listesi:\n";
 
     for (int i = 0; i < current_book_count; i++) {
@@ -133,16 +149,16 @@ void display_books() {
 
 
 void deleteBook(string title){
-	
+	system("cls");
 	bool deleted = false;
 	if(title == ""){
 	    cin.ignore(1000, '\n'); 
 	
 	    cout << "\nKitap Ismi Giriniz: ";
-	    getline(cin, title); // Artik kullanici girisini düzgün bekler
+	    getline(cin, title); // Artik kullanici girisini dï¿½zgï¿½n bekler
 	}
     for (int d = 0; d < current_book_count; d++) {
-        // Küçük bir ipucu: if blogunun içindeki ELSE BREAK kismini sildiginden emin ol!
+        // Kï¿½ï¿½ï¿½k bir ipucu: if blogunun iï¿½indeki ELSE BREAK kismini sildiginden emin ol!
         if (title == library[d].title) {
             cout << "\n--- KITAP SILINIYOR ---" << endl;
             cout << "Baslik: " << library[d].title << endl;
@@ -156,17 +172,24 @@ void deleteBook(string title){
         }
     }
     
+    		if(deleted){
+			
             cout << "\n--- KITAP SILINDI ---" << endl;
             current_book_count--;
-    
+            save_books_to_file();
+			}else{
+				cout << "\n BELIRTILEN KITAP BULUNAMADI!!\n";
+			}
     
 	
 }
 
 int main() {
+	cout << "Program Loaded to RAM...";
+	system("pause");
 	setlocale(LC_ALL, "Turkish");
 	readybooks();
-	
+	display_books();
     int choice;
 
 	while(choice != 5){
@@ -189,5 +212,6 @@ int main() {
 		}
         
 	}
+    save_books_to_file();
     return 0;
 }
