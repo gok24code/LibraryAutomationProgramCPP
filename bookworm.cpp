@@ -64,7 +64,7 @@ void readybooks(){
 void add_book() {
 	system("cls");
     if (current_book_count >= MAX_COUNT) {
-        cout << "Kï¿½tï¿½phane dolu!\n";
+        cout << "Kütüphane dolu!\n";
         return;
     }
     
